@@ -10,8 +10,6 @@ const { execSync,spawn } = require('child_process');
 
 let generatePhpApiDocs = !!hexo.env.args.withPhpApidoc;
 
-
-
 if (generatePhpApiDocs) {
    hexo.extend.filter.register("before_generate", function() {
       let get_php_apidoc_saved_dir = hexo.extend.helper.get("get_php_apidoc_saved_dir");
@@ -60,14 +58,14 @@ if (generatePhpApiDocs) {
                cwd:ideAutoCompleteDir
             });
             ls.stdout.on('data', (data) => {
-               console.log(`stdout: ${data}`);
+               hexo.log.info(`${data}`);
             });
             ls.stderr.on('data', (data) => {
-               console.log(`stderr: ${data}`);
+               hexo.log.warn(`${data}`);
             });
             ls.on('close', (code) => {
                if (0 !== code) {
-                  console.log("apigen error");
+                  hexo.log.error("apigen error");
                   reject("apigen error");
                } else {
                   resovle();
@@ -75,7 +73,7 @@ if (generatePhpApiDocs) {
             });
          });
       }).catch(function(error){
-         console.log(error);
+         hexo.log.error(error);
       });
    }, 1);
 }
